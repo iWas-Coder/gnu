@@ -7,7 +7,7 @@
 	     (nongnu packages linux)
 	     (nongnu system linux-initrd))
 ;; === Service Modules === ;;
-(use-service-modules networking ssh cups xorg desktop)
+(use-service-modules networking ssh cups xorg)
 
 ;; === GNU System Definition === ;;
 (operating-system
@@ -23,7 +23,7 @@
   (users (cons* (user-account
                   (name "iwas")
                   (comment "Wasym Atieh Alonso")
-                  (group "users")
+                  (group "iwas")
                   (home-directory "/home/iwas")
                   (supplementary-groups '("wheel" "netdev" "audio" "video")))
                 %base-user-accounts))
