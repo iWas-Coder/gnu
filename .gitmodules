@@ -10,3 +10,9 @@
 [submodule "src/zsh-autosuggestions"]
 	path = src/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
+[submodule "src/nvchad"]
+	path = src/nvchad
+	url = https://github.com/NvChad/NvChad
+[submodule "src/bumblebee-status"]
+	path = src/bumblebee-status
+	url = https://github.com/tobi-wan-kenobi/bumblebee-status
