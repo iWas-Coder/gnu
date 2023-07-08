@@ -1,0 +1,12 @@
+[submodule "src/powerlevel10k"]
+	path = src/powerlevel10k
+	url = https://github.com/romkatv/powerlevel10k
+[submodule "src/fzf"]
+	path = src/fzf
+	url = https://github.com/junegunn/fzf
+[submodule "src/zsh-syntax-highlighting"]
+	path = src/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
+[submodule "src/zsh-autosuggestions"]
+	path = src/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
