@@ -44,6 +44,7 @@
         "tree"
         "ungoogled-chromium"
         "wine"
+        "xinit"
         "xrandr"
         "zsh")))
 
@@ -193,6 +194,13 @@
           (list
             `(".local/share/fonts/jetbrains-mono-nf"
               ,(local-file "./config/fonts/jetbrains-mono-nf"
+                           #:recursive? #t))))
+      ;; macos-bigsur-cursor
+      (simple-service 'macos-bigsur-cursor-config
+        home-files-service-type
+          (list
+            `(".local/share/icons/macos-bigsur"
+              ,(local-file "./config/cursors/macos-bigsur"
                            #:recursive? #t))))
       ;; bumblebee-status
       (simple-service 'bumblebee-status-config
