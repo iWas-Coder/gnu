@@ -79,23 +79,8 @@ cfdisk /dev/nvme1n1
 
 ```shell
 mkfs.vfat -F 32 -n EFI /dev/nvme0n1p1
-```
-
-(...)
-
-```shell
 mkfs.ext4 -L BOOT /dev/nvme0n1p2
-```
-
-(...)
-
-```shell
 mkfs.ext4 -L SYS /dev/nvme0n1p3
-```
-
-(...)
-
-```shell
 mkfs.ext4 -L DATA /dev/nvme1n1p1
 ```
 
@@ -103,6 +88,8 @@ mkfs.ext4 -L DATA /dev/nvme1n1p1
 
 ```shell
 mount -L SYS /mnt
+mount -L BOOT /mnt/boot --mkdir
+mount -L EFI /mnt/boot/efi --mkdir
 ```
 
 ### GNU System instantiation
