@@ -15,11 +15,31 @@
 ## Table of Contents
 
 - [Installation](#installation)
+    - [Image build](#image-build)
     - [Disks partitioning](#disks-partitioning)
+    - [Partitions formatting](#partitions-formatting)
+    - [GNU System instantiation](#gnu-system-instantiation)
 
 ## Installation
 
 Installation guide of a distribution of the GNU system, managed through the GNU Guix package manager, and completely defined and programmed in GNU Guile.
+
+(...)
+
+### Image build
+
+(...)
+
+```shell
+git clone "https://github.com/iwas-coder/gnu"
+```
+
+(...)
+
+```shell
+guix time-machine -C gnu/channels.scm -- \
+     system image -t iso9660 gnu/install.scm
+```
 
 (...)
 
@@ -28,7 +48,7 @@ Installation guide of a distribution of the GNU system, managed through the GNU 
 (...)
 
 ```shell
-$  cfdisk /dev/$DISK1
+cfdisk /dev/nvme0n1
 ```
 
 (...)
@@ -42,7 +62,7 @@ $  cfdisk /dev/$DISK1
 (...)
 
 ```shell
-$  cfdisk /dev/$DISK2
+cfdisk /dev/nvme1n1
 ```
 
 (...)
@@ -53,3 +73,56 @@ $  cfdisk /dev/$DISK2
 
 (...)
 
+### Partitions formatting
+
+(...)
+
+```shell
+mkfs.vfat -F 32 -n EFI /dev/nvme0n1p1
+```
+
+(...)
+
+```shell
+mkfs.ext4 -L BOOT /dev/nvme0n1p2
+```
+
+(...)
+
+```shell
+mkfs.ext4 -L SYS /dev/nvme0n1p3
+```
+
+(...)
+
+```shell
+mkfs.ext4 -L DATA /dev/nvme1n1p1
+```
+
+(...)
+
+```shell
+mount -L SYS /mnt
+```
+
+### GNU System instantiation
+
+(...)
+
+```shell
+git clone "https://github.com/iwas-coder/gnu"
+```
+
+(...)
+
+```shell
+herd start cow-store /mnt
+```
+
+(...)
+
+```shell
+guix system init gnu/system.scm /mnt
+```
+
+(...)
