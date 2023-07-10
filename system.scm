@@ -122,6 +122,7 @@
 (define %service-agetty
   (service agetty-service-type
     (agetty-configuration
+      (tty "ttyS0")
       (term "xterm")
       (no-clear? #t)
       (no-hostname? #t))))
