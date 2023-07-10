@@ -42,7 +42,7 @@
 (define %locale "en_US.utf8")
 (define %timezone "Europe/Madrid")
 (define %keyboard-layout (keyboard-layout "us" "altgr-intl"))
-(define %issue "GNU/\s \r (\l)")
+(define %issue "GNU/\\s \\r (\\l)")
 ;; User
 (define %personal-user-name "iwas")
 (define %personal-user-fullname "Wasym Atieh Alonso")

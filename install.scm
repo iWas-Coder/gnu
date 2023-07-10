@@ -36,7 +36,7 @@
 (define %locale "en_US.utf8")
 (define %timezone "Europe/Madrid")
 (define %keyboard-layout (keyboard-layout "us" "altgr-intl"))
-(define %issue "GNU/\s (iso) \r (\l)")
+(define %issue "GNU/\\s (iso) \\r (\\l)")
 ;; Packages
 (define %package-list
   (list
