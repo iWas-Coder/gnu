@@ -62,7 +62,6 @@
 (define %part-boot-format "ext4")
 (define %part-efi-label "EFI")
 (define %part-efi-mountpoint "/boot/efi")
-(define %part-efi-canonical-path "/mnt/boot/efi")
 (define %part-efi-format "vfat")
 (define %part-data-label "DATA")
 (define %part-data-mountpoint
@@ -98,7 +97,7 @@
 (define %bootloader-config
   (bootloader-configuration
     (bootloader grub-efi-bootloader)
-    (targets (list %part-efi-canonical-path))
+    (targets (list %part-efi-mountpoint))
     (timeout -1)
     (theme (grub-theme
       (gfxmode '("800x600x32"))))))
