@@ -22,7 +22,9 @@
 
 ;; === Modules === ;;
 (use-modules (gnu)
+             (gnu packages shells)
              (gnu services base)
+             (gnu services sysctl)
              (gnu services networking)
              (gnu services xorg)
              (gnu services cups)
@@ -118,7 +120,7 @@
             '(("vm.max_map_count" . "1048576"))
             %default-sysctl-settings))))))
 (define %service-agetty
-  (agetty-service
+  (service agetty-service-type
     (agetty-configuration
       (term "xterm")
       (no-clear? #t)
@@ -131,8 +133,6 @@
   (extra-special-file
     "/etc/lsb-release"
     (local-file "./config/lsb-release")))
-(define %service-dhcp-client
-  (service dhcp-client-service-type))
 (define %service-xorg
   (set-xorg-configuration
     (xorg-configuration
@@ -147,7 +147,7 @@
     %service-agetty
     %service-os-release
     %service-lsb-release
-    %service-dhcp-client
+    (service dhcp-client-service-type)
     %service-xorg
     %service-cups
     (dbus-service)
