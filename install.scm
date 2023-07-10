@@ -61,7 +61,7 @@
   (kernel %kernel)
   (initrd %initrd)
   (firmware %firmware)
-  (hostname %hostname)
+  (host-name %hostname)
   (locale %locale)
   (timezone %timezone)
   (keyboard-layout %keyboard-layout)
