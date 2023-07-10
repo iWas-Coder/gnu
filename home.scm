@@ -11,8 +11,9 @@
              (gnu services)
              (guix gexp))
 
+;; === GNU Home Definition === ;;
 (home-environment
-  ;; === Packages === ;;
+  ;; Packages
   (packages
     (specifications->packages
       (list
@@ -30,6 +31,8 @@
         "gnupg"
         "htop"
         "i3-wm"
+        "i3status"
+        "i3lock"
         "kitty"
         "mangohud"
         "neofetch"
@@ -48,9 +51,15 @@
         "xrandr"
         "zsh")))
 
-  ;; === Services === ;;
+  ;; Services
   (services
     (list
+      ;; channels
+      (simple-service 'channels-config
+        home-xdg-configuration-files-service-type
+          (list
+            `("guix/channels.scm"
+              ,(local-file "./channels.scm"))))
       ;; i3
       (simple-service 'i3-config
         home-xdg-configuration-files-service-type
