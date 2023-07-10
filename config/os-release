@@ -1,0 +1,5 @@
+NAME="GNU/Linux"
+ID=gnu-linux
+PRETTY_NAME="GNU/Linux"
+HOME_URL="https://www.gnu.org"
+VERSION_ID="rolling"
