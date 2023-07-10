@@ -23,13 +23,15 @@
 ;; === Modules === ;;
 (use-modules (gnu)
              (gnu packages shells)
+             (gnu packages certs)
              (gnu services base)
-             (gnu services sysctl)
+             (gnu services avahi)
              (gnu services networking)
              (gnu services xorg)
              (gnu services cups)
-             (gnu services desktop)
+             (gnu services dbus)
              (gnu services sound)
+             (gnu services desktop)
 	           (nongnu packages linux)
 	           (nongnu system linux-initrd))
 
@@ -66,9 +68,9 @@
   (string-append "/home/" %personal-user-name "/data"))
 (define %part-data-format "vfat")
 ;; Packages
-(define %package-list
+(define %packages-list
   (list
-    "nss-certs"))
+    nss-certs))
 
 
 ;; === Data Structures === ;;
@@ -107,54 +109,61 @@
     (group %personal-user-group)
     (supplementary-groups %personal-user-suppl-groups)
     (shell %personal-user-shell)))
-;; Packages
-(define %package-spec-list
-  (specifications->packages %package-list))
 ;; Services
-(define %service-sysctl
-  (modify-services %base-services
-    (sysctl-service-type config =>
-      (sysctl-configuration
-        (settings
-          (append
-            '(("vm.max_map_count" . "1048576"))
-            %default-sysctl-settings))))))
-(define %service-agetty
-  (service agetty-service-type
-    (agetty-configuration
-      (tty "ttyS0")
-      (term "xterm")
-      (no-clear? #t)
-      (no-hostname? #t))))
-(define %service-os-release
+(define %service-agetty-config
+  (agetty-configuration
+    (tty "ttyS0")
+    (term "xterm")
+    (no-clear? #t)
+    (no-hostname? #t)))
+(define %service-xorg-config
+  (xorg-configuration
+    (keyboard-layout %keyboard-layout)))
+(define %service-cups-config
+  (cups-configuration
+    (web-interface? #t)))
+(define %service-os-release-file
   (extra-special-file
     "/etc/os-release"
-    (local-file "./config/os-release")))
-(define %service-lsb-release
+    (local-file "./config/etc/os-release")))
+(define %service-lsb-release-file
   (extra-special-file
     "/etc/lsb-release"
-    (local-file "./config/lsb-release")))
-(define %service-xorg
-  (set-xorg-configuration
-    (xorg-configuration
-      (keyboard-layout keyboard-layout))))
-(define %service-cups
-  (service cups-service-type
-    (cups-configuration
-      (web-interface? #t))))
-(define %service-list
+    (local-file "./config/etc/lsb-release")))
+(define %service-sysctl-file
+  (extra-special-file
+    "/etc/sysctl.conf"
+    (local-file "./config/etc/sysctl.conf")))
+(define %services-list
   (list
-    %service-sysctl
-    %service-agetty
-    %service-os-release
-    %service-lsb-release
+    ; Agetty
+    (service agetty-service-type %service-agetty-config)
+    ; Xorg
+    (set-xorg-configuration %service-xorg-config)
+    ; D-Bus
+    (service avahi-service-type)
+    (service udisks-service-type)
+    (service upower-service-type)
+    (service accountsservice-service-type)
+    (service cups-pk-helper-service-type)
+    (service colord-service-type)
+    (service geoclue-service-type)
+    (service polkit-service-type)
+    (service elogind-service-type)
+    (service dbus-root-service-type)
+    ; DHCP
     (service dhcp-client-service-type)
-    %service-xorg
-    %service-cups
-    (dbus-service)
-    (elogind-service)
+    ; NTP
+    (service ntp-service-type)
+    ; Audio
     (service alsa-service-type)
-    (service pulseaudio-service-type)))
+    (service pulseaudio-service-type)
+    ; CUPS
+    (service cups-service-type %service-cups-config)
+    ; etc extra config files
+    %service-os-release-file
+    %service-lsb-release-file
+    %service-sysctl-file))
 
 
 ;; === GNU System Definition === ;;
@@ -185,11 +194,11 @@
   (users (cons %personal-user %base-user-accounts))
 
   ;; Packages
-  ; %package-spec-list => <specifications->packages>
+  ; %packages-list => list
   ; %base-packages => list
-  (packages (cons %package-spec-list %base-packages))
+  (packages (append %packages-list %base-packages))
 
   ;; Services
-  ; %service-list => list
+  ; %services-list => list
   ; %base-services => list
-  (services (append %service-list %base-services)))
+  (services (append %services-list %base-services)))
