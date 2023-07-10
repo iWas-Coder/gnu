@@ -1,8 +1,8 @@
 [//]: # (Title of the project)
 
-<img src="assets/logo.png" alt="Robby" width=400/>
+<img src="assets/logo.png" alt="Robby" width=50%/>
 
-# Robby: A GNU system & dotfiles definition
+# GNU: "GNU's Not UNIX!"
 
 [//]: # (GPLv3 License indicator)
 
