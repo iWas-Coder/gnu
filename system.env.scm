@@ -19,9 +19,10 @@
 (define-public %personal-user-name "iwas")
 (define-public %personal-user-fullname "Wasym Atieh Alonso")
 (define-public %personal-user-group "users")
-(define-public %personal-user-suppl-groups '("wheel"
-                                             "audio"
-                                             "video"))
+(define-public %personal-user-suppl-groups
+  '("wheel"
+    "audio"
+    "video"))
 (define-public %personal-user-shell (file-append zsh "bin/zsh"))
 
 ;; Filesystems
@@ -35,8 +36,14 @@
 (define-public %part-efi-mountpoint "/boot/efi")
 (define-public %part-efi-format "vfat")
 (define-public %part-data-label "DATA")
-(define-public %part-data-mountpoint (string-append
-                                        "/home/"
-                                        %personal-user-name
-                                        "/data"))
+(define-public %part-data-mountpoint
+  (string-append
+    "/home/"
+    %personal-user-name
+    "/data"))
 (define-public %part-data-format "vfat")
+
+;; Packages
+(define-public %package-list
+  (list
+    "nss-certs"))

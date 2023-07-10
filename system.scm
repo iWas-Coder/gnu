@@ -4,6 +4,12 @@
 
 ;; === Global Modules === ;;
 (use-modules (gnu)
+             (gnu services base)
+             (gnu services networking)
+             (gnu services xorg)
+             (gnu services cups)
+             (gnu services desktop)
+             (gnu services sound)
 	           (nongnu packages linux)
 	           (nongnu system linux-initrd)
              (robby system))
@@ -32,7 +38,6 @@
       (device (file-system-label %part-data-label))
       (mount-point %part-data-mountpoint)
       (type %part-data-format))))
-
 ;; Bootloader
 (define %bootloader-config
   (bootloader-configuration
@@ -47,6 +52,9 @@
     (group %personal-user-group)
     (supplementary-groups %personal-user-suppl-groups)
     (shell %personal-user-shell)))
+;; Packages
+(define %package-spec-list
+  (specifications->packages %package-list))
 
 
 ;; === GNU System Definition === ;;
@@ -63,33 +71,55 @@
   (issue %issue)
 
   ;; Filesystems
-  ; %part-fs-list -> list[<file-system>]
-  ; %base-file-systems -> list[<file-system>]
+  ; %part-fs-list => list
+  ; %base-file-systems => list
   (file-systems (append %part-fs-list %base-file-systems))
 
   ;; Bootloader
-  ; %bootloader-config -> <bootloader-configuration>
+  ; %bootloader-config => <bootloader-configuration>
   (bootloader %bootloader-config)
 
   ;; Users
-  ; %personal-user -> <user-account>
-  ; %base-user-accounts -> list[<user-account>]
+  ; %personal-user => <user-account>
+  ; %base-user-accounts => list
   (users (cons %personal-user %base-user-accounts))
 
-  ;; Packages (system-wide)
-  (packages
-    (append
-      (list
-        (specification->package
-          "nss-certs"))
-      %base-packages))
+  ;; Packages
+  ; %package-spec-list => <specifications->packages>
+  ; %base-packages => list
+  (packages (cons %package-spec-list %base-packages))
 
   ;; Services
   (services
     (append
       (list
-        (service cups-service-type)
+        (modify-services %base-services
+          (sysctl-service-type config =>
+            (sysctl-configuration
+              (settings
+                (append
+                  '(("vm.max_map_count" . "1048576"))
+                  %default-sysctl-settings)))))
+        (agetty-service
+          (agetty-configuration
+            (term "xterm")
+            (no-clear? #t)
+            (no-hostname? #t)))
+        (extra-special-file
+          "/etc/os-release"
+          (local-file "./config/os-release"))
+        (extra-special-file
+          "/etc/lsb-release"
+          (local-file "./config/lsb-release"))
+        (service dhcp-client-service-type)
         (set-xorg-configuration
-          (xorg-configuration (keyboard-layout keyboard-layout))))
-      %desktop-services))
+          (xorg-configuration (keyboard-layout keyboard-layout)))
+        (service cups-service-type
+          (cups-configuration
+            (web-interface? #t)))
+        (dbus-service)
+        (elogind-service)
+        (service alsa-service-type)
+        (service pulseaudio-service-type))
+      %base-services))
 )
