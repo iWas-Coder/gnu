@@ -1,8 +1,26 @@
+;;; GNU --- "GNU's Not UNIX!"
+;;;
+;;; This file is part of GNU.
+;;;
+;;; GNU is free software; you can redistribute it and/or modify it
+;;; under the terms of the GNU General Public License as published by
+;;; the Free Software Foundation; either version 3 of the License, or (at
+;;; your option) any later version.
+;;;
+;;; GNU is distributed in the hope that it will be useful, but
+;;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;; GNU General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with GNU. If not, see <http://www.gnu.org/licenses/>.
+;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; === GNU System Config by iWas <3 === ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; === Global Modules === ;;
+
+;; === Modules === ;;
 (use-modules (gnu)
              (gnu services base)
              (gnu services networking)
@@ -11,14 +29,47 @@
              (gnu services desktop)
              (gnu services sound)
 	           (nongnu packages linux)
-	           (nongnu system linux-initrd)
-             (robby system))
-
-;; === Service Modules === ;;
-(use-service-modules networking ssh cups xorg)
+	           (nongnu system linux-initrd))
 
 
-;; === Global Variables === ;;
+;; === Variables === ;;
+;; Base options
+(define %label "GNU/Linux")
+(define %kernel linux)
+(define %initrd microcode-initrd)
+(define %firmware (list linux-firmware))
+(define %hostname "sheldon")
+(define %locale "en_US.utf8")
+(define %timezone "Europe/Madrid")
+(define %keyboard-layout (keyboard-layout "us" "altgr-intl"))
+(define %issue "GNU/\s \r (\l)")
+;; User
+(define %personal-user-name "iwas")
+(define %personal-user-fullname "Wasym Atieh Alonso")
+(define %personal-user-group "users")
+(define %personal-user-suppl-groups '("wheel" "audio" "video"))
+(define %personal-user-shell (file-append zsh "bin/zsh"))
+;; Filesystems
+(define %part-sys-label "SYS")
+(define %part-sys-mountpoint "/")
+(define %part-sys-format "ext4")
+(define %part-boot-label "BOOT")
+(define %part-boot-mountpoint "/boot")
+(define %part-boot-format "ext4")
+(define %part-efi-label "EFI")
+(define %part-efi-mountpoint "/boot/efi")
+(define %part-efi-format "vfat")
+(define %part-data-label "DATA")
+(define %part-data-mountpoint
+  (string-append "/home/" %personal-user-name "/data"))
+(define %part-data-format "vfat")
+;; Packages
+(define %package-list
+  (list
+    "nss-certs"))
+
+
+;; === Data Structures === ;;
 ;; Filesystems
 (define %part-fs-list
   (list
@@ -43,7 +94,9 @@
   (bootloader-configuration
     (bootloader grub-efi-bootloader)
     (targets (list %part-efi-mountpoint))
-    (keyboard-layout keyboard-layout)))
+    (timeout -1)
+    (theme (grub-theme
+      (gfxmode '("800x600x32"))))))
 ;; User
 (define %personal-user
   (user-account
@@ -55,6 +108,52 @@
 ;; Packages
 (define %package-spec-list
   (specifications->packages %package-list))
+;; Services
+(define %service-sysctl
+  (modify-services %base-services
+    (sysctl-service-type config =>
+      (sysctl-configuration
+        (settings
+          (append
+            '(("vm.max_map_count" . "1048576"))
+            %default-sysctl-settings))))))
+(define %service-agetty
+  (agetty-service
+    (agetty-configuration
+      (term "xterm")
+      (no-clear? #t)
+      (no-hostname? #t))))
+(define %service-os-release
+  (extra-special-file
+    "/etc/os-release"
+    (local-file "./config/os-release")))
+(define %service-lsb-release
+  (extra-special-file
+    "/etc/lsb-release"
+    (local-file "./config/lsb-release")))
+(define %service-dhcp-client
+  (service dhcp-client-service-type))
+(define %service-xorg
+  (set-xorg-configuration
+    (xorg-configuration
+      (keyboard-layout keyboard-layout))))
+(define %service-cups
+  (service cups-service-type
+    (cups-configuration
+      (web-interface? #t))))
+(define %service-list
+  (list
+    %service-sysctl
+    %service-agetty
+    %service-os-release
+    %service-lsb-release
+    %service-dhcp-client
+    %service-xorg
+    %service-cups
+    (dbus-service)
+    (elogind-service)
+    (service alsa-service-type)
+    (service pulseaudio-service-type)))
 
 
 ;; === GNU System Definition === ;;
@@ -90,36 +189,6 @@
   (packages (cons %package-spec-list %base-packages))
 
   ;; Services
-  (services
-    (append
-      (list
-        (modify-services %base-services
-          (sysctl-service-type config =>
-            (sysctl-configuration
-              (settings
-                (append
-                  '(("vm.max_map_count" . "1048576"))
-                  %default-sysctl-settings)))))
-        (agetty-service
-          (agetty-configuration
-            (term "xterm")
-            (no-clear? #t)
-            (no-hostname? #t)))
-        (extra-special-file
-          "/etc/os-release"
-          (local-file "./config/os-release"))
-        (extra-special-file
-          "/etc/lsb-release"
-          (local-file "./config/lsb-release"))
-        (service dhcp-client-service-type)
-        (set-xorg-configuration
-          (xorg-configuration (keyboard-layout keyboard-layout)))
-        (service cups-service-type
-          (cups-configuration
-            (web-interface? #t)))
-        (dbus-service)
-        (elogind-service)
-        (service alsa-service-type)
-        (service pulseaudio-service-type))
-      %base-services))
-)
+  ; %service-list => list
+  ; %base-services => list
+  (services (append %service-list %base-services)))

@@ -1,15 +1,54 @@
+;;; GNU --- "GNU's Not UNIX!"
+;;;
+;;; This file is part of GNU.
+;;;
+;;; GNU is free software; you can redistribute it and/or modify it
+;;; under the terms of the GNU General Public License as published by
+;;; the Free Software Foundation; either version 3 of the License, or (at
+;;; your option) any later version.
+;;;
+;;; GNU is distributed in the hope that it will be useful, but
+;;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;; GNU General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with GNU. If not, see <http://www.gnu.org/licenses/>.
+;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; === GNU System Config by iWas <3 === ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; === Global Modules === ;;
+
+;; === Modules === ;;
 (use-modules (gnu)
 	           (nongnu packages linux)
-	           (nongnu system linux-initrd)
-             (robby install))
+	           (nongnu system linux-initrd))
 
 
-;; === Global Variables === ;;
+;; === Variables === ;;
+;; Base options
+(define %label "GNU/Linux (iso)")
+(define %kernel linux)
+(define %initrd microcode-initrd)
+(define %firmware (list linux-firmware))
+(define %hostname "gnu")
+(define %locale "en_US.utf8")
+(define %timezone "Europe/Madrid")
+(define %keyboard-layout (keyboard-layout "us" "altgr-intl"))
+(define %issue "GNU/\s (iso) \r (\l)")
+;; Packages
+(define %package-list
+  (list
+    "glibc"
+    "fontconfig"
+    "font-dejavu"
+    "font-gnu-unifont"
+    "grub"
+    "nss-certs"))
+
+
+;; === Data Structures === ;;
 ;; Packages
 (define %package-spec-list
   (specifications->packages %package-list))
