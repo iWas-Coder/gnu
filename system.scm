@@ -46,13 +46,12 @@
 (define %locale "en_US.utf8")
 (define %timezone "Europe/Madrid")
 (define %keyboard-layout (keyboard-layout "us" "altgr-intl"))
-(define %issue "GNU/\\s \\r (\\l)")
+(define %issue "GNU/\\s \\r (\\l)\\n")
 ;; User
 (define %personal-user-name "iwas")
 (define %personal-user-fullname "Wasym Atieh Alonso")
 (define %personal-user-group "users")
 (define %personal-user-suppl-groups '("wheel" "audio" "video"))
-(define %personal-user-shell (file-append zsh "bin/zsh"))
 ;; Filesystems
 (define %part-sys-label "SYS")
 (define %part-sys-mountpoint "/")
@@ -107,8 +106,7 @@
     (name %personal-user-name)
     (comment %personal-user-fullname)
     (group %personal-user-group)
-    (supplementary-groups %personal-user-suppl-groups)
-    (shell %personal-user-shell)))
+    (supplementary-groups %personal-user-suppl-groups)))
 ;; Services
 (define %service-agetty-config
   (agetty-configuration

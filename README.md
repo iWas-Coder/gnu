@@ -88,8 +88,10 @@ mkfs.ext4 -L DATA /dev/nvme1n1p1
 
 ```shell
 mount -L SYS /mnt
-mount -L BOOT /mnt/boot --mkdir
-mount -L EFI /mnt/boot/efi --mkdir
+mkdir /mnt/boot
+mount -L BOOT /mnt/boot
+mkdir /mnt/boot/efi
+mount -L EFI /mnt/boot/efi
 ```
 
 ### GNU System instantiation
