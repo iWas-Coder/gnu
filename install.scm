@@ -22,8 +22,8 @@
 
 ;; === Modules === ;;
 (use-modules (gnu)
-	           (nongnu packages linux)
-	           (nongnu system linux-initrd))
+	     (nongnu packages linux)
+	     (nongnu system linux-initrd))
 
 
 ;; === Variables === ;;
@@ -40,12 +40,13 @@
 ;; Packages
 (define %package-list
   (list
-    "glibc"
-    "fontconfig"
-    "font-dejavu"
-    "font-gnu-unifont"
-    "grub"
-    "nss-certs"))
+   "fontconfig"
+   "font-dejavu"
+   "font-gnu-unifont"
+   "git"
+   "glibc"
+   "grub"
+   "nss-certs"))
 
 
 ;; === Data Structures === ;;
@@ -56,25 +57,31 @@
 
 ;; === GNU Install Definition === ;;
 (operating-system
-  ;; Base options
-  (label %label)
-  (kernel %kernel)
-  (initrd %initrd)
-  (firmware %firmware)
-  (host-name %hostname)
-  (locale %locale)
-  (timezone %timezone)
-  (keyboard-layout %keyboard-layout)
-  (issue %issue)
+ ;; Base options
+ (label %label)
+ (kernel %kernel)
+ (initrd %initrd)
+ (firmware %firmware)
+ (host-name %hostname)
+ (locale %locale)
+ (timezone %timezone)
+ (keyboard-layout %keyboard-layout)
+ (issue %issue)
 
-  ;; Packages
-  ; %package-spec-list => <specifications->packages>
-  ; %installer-disk-utilities => list
-  ; %base-packages => list
-  (packages (append %package-spec-list
-                    %installer-disk-utilities
-                    %base-packages))
+ ;; Filesystems
+ (file-systems ...)
 
-  ;; Services
-  ; %installation-services => list
-  (services %installation-services))
+ ;; Bootloader
+ (bootloader ...)
+
+ ;; Packages
+ ;; %package-spec-list => <specifications->packages>
+ ;; %installer-disk-utilities => list
+ ;; %base-packages => list
+ (packages (append %package-spec-list
+                   %installer-disk-utilities
+                   %base-packages))
+
+ ;; Services
+ ;; %installation-services => list
+ (services %installation-services))
