@@ -65,7 +65,7 @@
 (define %part-data-label "DATA")
 (define %part-data-mountpoint
   (string-append "/home/" %personal-user-name "/data"))
-(define %part-data-format "vfat")
+(define %part-data-format "ext4")
 ;; Packages
 (define %packages-list
   (list
