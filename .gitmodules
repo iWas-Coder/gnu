@@ -16,3 +16,6 @@
 [submodule "src/bumblebee-status"]
 	path = src/bumblebee-status
 	url = https://github.com/tobi-wan-kenobi/bumblebee-status
+[submodule "src/pingu"]
+	path = src/pingu
+	url = https://github.com/iwas-coder/pingu
