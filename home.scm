@@ -45,7 +45,7 @@
     "emacs"
     "feh"
     "file"
-    "gcc"
+    "gcc-toolchain"
     "git"
     "gnupg"
     "htop"
@@ -73,167 +73,133 @@
  ;; Services
  (services
   (list
-   ;; channels
-   (simple-service 'channels-config
+   ;; xdg-configs
+   (simple-service 'xdg-configs
 		   home-xdg-configuration-files-service-type
 		   (list
-		    `("guix/channels.scm"
-		      ,(local-file "./channels.scm"))))
-   ;; i3
-   (simple-service 'i3-config
-		   home-xdg-configuration-files-service-type
-		   (list
-		    `("i3/config"
-		      ,(local-file "./config/i3/config"))))
-   ;; kitty
-   (simple-service 'kitty-config
-		   home-xdg-configuration-files-service-type
-		   (list
-		    `("kitty/kitty.conf"
-		      ,(local-file "./config/kitty/kitty.conf"))
-		    `("kitty/color.ini"
-		      ,(local-file "./config/kitty/color.ini"))))
-   ;; emacs
-   (simple-service 'emacs-config
-		   home-files-service-type
-		   (list
-		    `(".emacs.d/init.el"
-		      ,(local-file "./config/emacs/init.el"))
-		    `(".emacs.d/config.org"
-		      ,(local-file "./config/emacs/config.org"))
-		    `(".emacs.d/logo.png"
-		      ,(local-file "./config/emacs/logo.png"))))
-   ;; git
-   (simple-service 'git-config
-		   home-files-service-type
-		   (list
-		    `(".gitconfig"
-		      ,(local-file "./config/git/gitconfig"))))
-   ;; wallpapers
-   (simple-service 'wallpapers-config
-		   home-files-service-type
-		   (list
-		    `(".wallpapers"
-		      ,(local-file "./config/wallpapers" #:recursive? #t))))
-   ;; zsh
-   (simple-service 'zsh-config
-		   home-files-service-type
-		   (list
-		    ;; local
-		    `(".zshrc"
-		      ,(local-file "./config/zsh/zshrc"))
-		    `(".zsh/.fzf.zsh"
-		      ,(local-file "./config/zsh/fzf.zsh"))
-		    `(".zsh/.p10k.zsh"
-		      ,(local-file "./config/zsh/p10k.zsh"))
-		    `(".zsh/zsh-sudo/sudo.plugin.zsh"
-		      ,(local-file "./config/zsh/sudo.plugin.zsh"))
-		    ;; external
-		    `(".zsh/powerlevel10k"
-		      ,(local-file "./src/powerlevel10k"
-				   #:recursive? #t))
-		    `(".zsh/fzf"
-		      ,(local-file "./src/fzf"
-				   #:recursive? #t))
-		    `(".zsh/zsh-syntax-highlighting"
-		      ,(local-file "./src/zsh-syntax-highlighting"
-				   #:recursive? #t))
-		    `(".zsh/zsh-autosuggestions"
-		      ,(local-file "./src/zsh-autosuggestions"
-				   #:recursive? #t))))
-   ;; xorg
-   (simple-service 'xorg-config
-		   home-files-service-type
-		   (list
-		    `(".xprofile"
-		      ,(local-file "./config/xorg/xprofile"))
-		    `(".Xresources"
-		      ,(local-file "./config/xorg/Xresources"))))
-   ;; neofetch
-   (simple-service 'neofetch-config
-		   home-xdg-configuration-files-service-type
-		   (list
-		    `("neofetch/config.conf"
-		      ,(local-file "./config/neofetch/config.conf"))))
-   ;; mangohud
-   (simple-service 'mangohud-config
-		   home-xdg-configuration-files-service-type
-		   (list
-		    `("MangoHud/Mangohud.conf"
-		      ,(local-file "./config/MangoHud/MangoHud.conf"))))
-   ;; btop
-   (simple-service 'btop-config
-		   home-xdg-configuration-files-service-type
-		   (list
-		    `("btop/btop.conf"
-		      ,(local-file "./config/btop/btop.conf"))))
-   ;; htop
-   (simple-service 'htop-config
-		   home-xdg-configuration-files-service-type
-		   (list
-		    `("htop/htoprc"
-		      ,(local-file "./config/htop/htoprc"))))
-   ;; ssh
-   (simple-service 'ssh-config
-		   home-files-service-type
-		   (list
-		    `(".ssh/config"
-		      ,(local-file "./config/ssh/config"))))
-   ;; minecraft
-   (simple-service 'minecraft-config
-		   home-files-service-type
-		   (list
-		    `(".minecraft/launch"
-		      ,(local-file "./config/minecraft/launch"))
-		    `(".minecraft/launcher/cmds.txt"
-		      ,(local-file "./config/minecraft/launcher/cmds.txt"))
-		    `(".minecraft/launcher/skin.png"
-		      ,(local-file "./config/minecraft/launcher/skin.png"))
-		    `(".minecraft/game/options.txt"
-		      ,(local-file "./config/minecraft/game/options.txt"))))
-   ;; minecraft-cmcl
-   (simple-service 'minecraft-cmcl-config
-		   home-xdg-configuration-files-service-type
-		   (list
-		    `("cmcl/cmcl.json"
-		      ,(local-file "./config/minecraft/launcher/cmcl.json"))))
-   ;; cava
-   (simple-service 'cava-config
-		   home-xdg-configuration-files-service-type
-		   (list
-		    `("cava/config"
-		      ,(local-file "./config/cava/config"))))
-   ;; chromium
-   (simple-service 'chromium-config
-		   home-xdg-configuration-files-service-type
-		   (list
-		    `("chromium-flags.conf"
-		      ,(local-file "./config/chromium/chromium-flags.conf"))))
-   ;; neovim
-   (simple-service 'neovim-config
-		   home-xdg-configuration-files-service-type
-		   (list
-		    `("nvim"
-		      ,(local-file "./src/nvchad"
-				   #:recursive? #t))))
-   ;; jetbrains-mono-nf-font
-   (simple-service 'jetbrains-mono-nf-font-config
-		   home-files-service-type
-		   (list
-		    `(".local/share/fonts/jetbrains-mono-nf"
-		      ,(local-file "./config/fonts/jetbrains-mono-nf"
-				   #:recursive? #t))))
-   ;; macos-bigsur-cursor
-   (simple-service 'macos-bigsur-cursor-config
-		   home-files-service-type
-		   (list
-		    `(".local/share/icons/macos-bigsur"
-		      ,(local-file "./config/cursors/macos-bigsur"
-				   #:recursive? #t))))
-   ;; bumblebee-status
-   (simple-service 'bumblebee-status-config
-		   home-xdg-configuration-files-service-type
-		   (list
+		    ;; btop
+		    `("btop"
+		      ,(local-file "./src/pingu/home/iwas/.config/btop" #:recursive? #t))
+		    ;; bumblebee-status
 		    `("bumblebee-status"
-		      ,(local-file "./src/bumblebee-status"
-				   #:recursive? #t)))))))
+		      ,(local-file "./src/bumblebee-status" #:recursive? #t))
+		    ;; cava
+		    `("cava"
+		      ,(local-file "./src/pingu/home/iwas/.config/cava" #:recursive? #t))
+		    ;; chromium-flags
+		    `("chromium-flags.conf"
+		      ,(local-file "./src/pingu/home/iwas/.config/chromium-flags.conf"))
+		    ;; cmcl
+		    `("cmcl"
+		      ,(local-file "./src/pingu/home/iwas/.config/cmcl" #:recursive? #t))
+		    ;; vs-code
+		    `("Code"
+		      ,(local-file "./src/pingu/home/iwas/.config/Code" #:recursive? #t))
+		    ;; guix-channels
+		    `("guix/channels.scm"
+		      ,(local-file "./channels.scm"))
+		    ;; gtk-2.0
+		    `("gtk-2.0"
+		      ,(local-file "./src/pingu/home/iwas/.config/gtk-2.0" #:recursive? #t))
+		    ;; gtk-3.0
+		    `("gtk-3.0"
+		      ,(local-file "./src/pingu/home/iwas/.config/gtk-3.0" #:recursive? #t))
+		    ;; htop
+		    `("htop"
+		      ,(local-file "./src/pingu/home/iwas/.config/htop" #:recursive? #t))
+		    ;; hypr
+		    `("hypr"
+		      ,(local-file "./src/pingu/home/iwas/.config/hypr" #:recursive? #t))
+		    ;; i3
+		    `("i3"
+		      ,(local-file "./src/pingu/home/iwas/.config/i3" #:recursive? #t))
+		    ;; kitty
+		    `("kitty"
+		      ,(local-file "./src/pingu/home/iwas/.config/kitty" #:recursive? #t))
+		    ;; legendary
+		    `("legendary"
+		      ,(local-file "./src/pingu/home/iwas/.config/legendary" #:recursive? #t))
+		    ;; mangohud
+		    `("MangoHud"
+		      ,(local-file "./src/pingu/home/iwas/.config/MangoHud" #:recursive? #t))
+		    ;; neofetch
+		    `("neofetch"
+		      ,(local-file "./src/pingu/home/iwas/.config/neofetch" #:recursive? #t))
+		    ;; nvim
+		    `("nvim"
+		      ,(local-file "./src/nvchad" #:recursive? #t))
+		    ;; picom
+		    `("picom"
+		      ,(local-file "./src/pingu/home/iwas/.config/picom" #:recursive? #t))
+		    ;; user-dirs
+		    `("user-dirs.dirs"
+		      ,(local-file "./src/pingu/home/iwas/.config/user-dirs.dirs"))
+		    ;; waybar
+		    `("waybar"
+		      ,(local-file "./src/pingu/home/iwas/.config/waybar" #:recursive? #t))))
+   ;; home-configs
+   (simple-service 'home-configs
+		   home-files-service-type
+		   (list
+		    ;; bitcoin
+		    `(".bitcoin"
+		      ,(local-file "./src/pingu/home/iwas/.bitcoin"))
+		    ;; emacs
+		    `(".emacs.d"
+		      ,(local-file "./src/pingu/home/iwas/.emacs.d" #:recursive? #t))
+		    ;; game-pkg-log
+		    `(".game-pkg.log"
+		      ,(local-file "./src/pingu/home/iwas/.game-pkg.log"))
+		    ;; gitconfig
+		    `(".gitconfig"
+		      ,(local-file "./src/pingu/home/iwas/.gitconfig"))
+		    ;; ironfish
+		    `(".ironfish"
+		      ,(local-file "./src/pingu/home/iwas/.ironfish"))
+		    ;; fonts
+		    `(".local/share/fonts"
+		      ,(local-file "./src/pingu/home/iwas/.local/share/fonts" #:recursive? #t))
+		    ;; minecraft
+		    `(".minecraft/launch"
+		      ,(local-file "./src/pingu/home/iwas/.minecraft/launch"))
+		    `(".minecraft/launcher/skin.png"
+		      ,(local-file "./src/pingu/home/iwas/.minecraft/launcher/skin.png"))
+		    `(".minecraft/launcher/cmds.txt"
+		      ,(local-file "./src/pingu/home/iwas/.minecraft/launcher/cmds.txt"))
+		    `(".minecraft/game/options.txt"
+		      ,(local-file "./src/pingu/home/iwas/.minecraft/game/options.txt"))
+		    ;; ssh
+		    `(".ssh/config"
+		      ,(local-file "./src/pingu/home/iwas/.ssh/config"))
+		    ;; vs-code
+		    `(".vscode/extensions/extensions.json"
+		      ,(local-file "./src/pingu/home/iwas/.vscode/extensions/extensions.json"))
+		    ;; wallpapers
+		    `(".wallpapers"
+		      ,(local-file "./src/pingu/home/iwas/.wallpapers" #:recursive? #t))
+		    ;; wprofile
+		    `(".wprofile"
+		      ,(local-file "./src/pingu/home/iwas/.wprofile"))
+		    ;; xprofile
+		    `(".xprofile"
+		      ,(local-file "./src/pingu/home/iwas/.xprofile"))
+		    ;; xresources
+		    `(".Xresources"
+		      ,(local-file "./src/pingu/home/iwas/.Xresources"))
+		    ;; zsh
+		    `(".zshrc"
+		      ,(local-file "./src/pingu/home/iwas/.zshrc"))
+		    `(".zsh/.fzf.zsh"
+		      ,(local-file "./src/pingu/home/iwas/.zsh/.fzf.zsh"))
+		    `(".zsh/.p10k.zsh"
+		      ,(local-file "./src/pingu/home/iwas/.zsh/.p10k.zsh"))
+		    `(".zsh/zsh-sudo"
+		      ,(local-file "./src/pingu/home/iwas/.zsh/zsh-sudo" #:recursive? #t))
+		    `(".zsh/powerlevel10k"
+		      ,(local-file "./src/powerlevel10k" #:recursive? #t))
+		    `(".zsh/fzf"
+		      ,(local-file "./src/fzf" #:recursive? #t))
+		    `(".zsh/zsh-syntax-highlighting"
+		      ,(local-file "./src/zsh-syntax-highlighting" #:recursive? #t))
+		    `(".zsh/zsh-autosuggestions"
+		      ,(local-file "./src/zsh-autosuggestions" #:recursive? #t)))))))
