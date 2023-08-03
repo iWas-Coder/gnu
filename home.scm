@@ -141,21 +141,15 @@
    (simple-service 'home-configs
 		   home-files-service-type
 		   (list
-		    ;; bitcoin
-		    `(".bitcoin"
-		      ,(local-file "./src/pingu/home/iwas/.bitcoin"))
 		    ;; emacs
 		    `(".emacs.d"
-		      ,(local-file "./src/pingu/home/iwas/.emacs.d" #:recursive? #t))
+		      ,(local-file "./src/pingu/home/iwas/emacs.d" #:recursive? #t))
 		    ;; game-pkg-log
 		    `(".game-pkg.log"
-		      ,(local-file "./src/pingu/home/iwas/.game-pkg.log"))
+		      ,(local-file "./src/pingu/home/iwas/game-pkg.log"))
 		    ;; gitconfig
 		    `(".gitconfig"
-		      ,(local-file "./src/pingu/home/iwas/.gitconfig"))
-		    ;; ironfish
-		    `(".ironfish"
-		      ,(local-file "./src/pingu/home/iwas/.ironfish"))
+		      ,(local-file "./src/pingu/home/iwas/gitconfig"))
 		    ;; fonts
 		    `(".local/share/fonts"
 		      ,(local-file "./src/pingu/home/iwas/.local/share/fonts" #:recursive? #t))
@@ -176,23 +170,23 @@
 		      ,(local-file "./src/pingu/home/iwas/.vscode/extensions/extensions.json"))
 		    ;; wallpapers
 		    `(".wallpapers"
-		      ,(local-file "./src/pingu/home/iwas/.wallpapers" #:recursive? #t))
+		      ,(local-file "./src/pingu/home/iwas/wallpapers" #:recursive? #t))
 		    ;; wprofile
 		    `(".wprofile"
-		      ,(local-file "./src/pingu/home/iwas/.wprofile"))
+		      ,(local-file "./src/pingu/home/iwas/wprofile"))
 		    ;; xprofile
 		    `(".xprofile"
-		      ,(local-file "./src/pingu/home/iwas/.xprofile"))
+		      ,(local-file "./src/pingu/home/iwas/xprofile"))
 		    ;; xresources
 		    `(".Xresources"
-		      ,(local-file "./src/pingu/home/iwas/.Xresources"))
+		      ,(local-file "./src/pingu/home/iwas/Xresources"))
 		    ;; zsh
 		    `(".zshrc"
-		      ,(local-file "./src/pingu/home/iwas/.zshrc"))
+		      ,(local-file "./src/pingu/home/iwas/zshrc"))
 		    `(".zsh/.fzf.zsh"
-		      ,(local-file "./src/pingu/home/iwas/.zsh/.fzf.zsh"))
+		      ,(local-file "./src/pingu/home/iwas/.zsh/fzf.zsh"))
 		    `(".zsh/.p10k.zsh"
-		      ,(local-file "./src/pingu/home/iwas/.zsh/.p10k.zsh"))
+		      ,(local-file "./src/pingu/home/iwas/.zsh/p10k.zsh"))
 		    `(".zsh/zsh-sudo"
 		      ,(local-file "./src/pingu/home/iwas/.zsh/zsh-sudo" #:recursive? #t))
 		    `(".zsh/powerlevel10k"
